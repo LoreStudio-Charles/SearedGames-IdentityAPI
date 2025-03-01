@@ -1,3 +1,4 @@
+import Group from '@db/models/common/group';
 import User from '@db/models/common/user.js'
 
 
@@ -15,7 +16,8 @@ export default class UserController {
         return User.findOne({where: { id }});
     }
 
-    upsert(user: User){
+    async upsert(user: User){
+        const memberGroup = await Group.findOne({where: { name: "Member" }});
         return User.findOne({ where: { name: user.name }})
         .then(async function(obj: User | null) {
             if(obj)
@@ -28,7 +30,9 @@ export default class UserController {
                         }
                     }
                 );                
-            } else {                        
+            } else {             
+                if(memberGroup)
+                    user.groupId = memberGroup.id;
                 await User.create(user);
             }
             

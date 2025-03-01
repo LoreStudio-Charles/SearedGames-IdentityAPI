@@ -49,7 +49,7 @@ export default class GroupController {
                     .then(async function(group:Group | null) {
                         if(group)
                         {
-                            user.GroupId = group.id;
+                            user.groupId = group.id;
                             await user.save();
                         }                 
                     });

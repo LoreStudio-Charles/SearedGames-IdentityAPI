@@ -1,13 +1,14 @@
 import { Request, Response } from'express';
 import AuthMiddleware from '@middleware/auth.middleware';
 import GroupController from '@controllers/common/accounts/group.controller';
+import GroupRoles from 'src/types/group.role';
 
 const express = require('express');
 const router = express.Router();
 const group_controller = new GroupController();
 const auth_middleware = new AuthMiddleware();
 
-router.get('/list', auth_middleware.verifyRole, async(req: Request, res: Response) => {
+router.get('/list', auth_middleware.verifyRole(GroupRoles.admin), async(req: Request, res: Response) => {
     try {
         const users = await group_controller.list();
         res.send(users);
@@ -17,7 +18,7 @@ router.get('/list', auth_middleware.verifyRole, async(req: Request, res: Respons
     }
 });
 
-router.get('/:id', auth_middleware.verifyRole, async(req: Request, res: Response) => {
+router.get('/:id', auth_middleware.verifyRole(GroupRoles.admin), async(req: Request, res: Response) => {
     try {
         const id = req.params.id;
         const user = await group_controller.getById(id);
@@ -28,7 +29,7 @@ router.get('/:id', auth_middleware.verifyRole, async(req: Request, res: Response
     }
 });
 
-router.post('/', async(req: Request, res: Response) => {    
+router.post('/', auth_middleware.verifyRole(GroupRoles.admin), async(req: Request, res: Response) => {    
     try{
         const group = req.body.group;
         
@@ -41,7 +42,7 @@ router.post('/', async(req: Request, res: Response) => {
     }
 });
 
-router.post('/join', async(req: Request, res: Response) => {
+router.post('/join', auth_middleware.verifyRole(GroupRoles.admin), async(req: Request, res: Response) => {
     try {
         const user_id = req.body.uid;
         const group_id = req.body.gid;
