@@ -22,21 +22,16 @@ export default class UserController {
         .then(async function(obj: User | null) {
             if(obj)
             {
-                await User.update(
-                    user,
-                    {
-                        where: {
-                            id: obj.id
-                        }
-                    }
-                );                
+                await user.save();
             } else {             
                 if(memberGroup)
                     user.groupId = memberGroup.id;
                 await User.create(user);
             }
             
-            return await User.findOne({ where: { name: user.name}});
+            const returnVal = await User.findOne({ where: { name: user.name}});
+            console.log("Value: " + JSON.stringify(returnVal));
+            return returnVal;
         })
     }
 }

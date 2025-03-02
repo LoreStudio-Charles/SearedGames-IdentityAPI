@@ -58,16 +58,20 @@ router.post('/ban', auth_middleware.verifyRole(GroupRoles.admin), async(req: Req
         {
             user.banned = ban_status;
         
+            console.log(`User: ${user.name} has has banned status set to ${ban_status}`);
             if(ban_status)
             {
                 const refresh_token = await RefreshToken.findOne({where: { uid }});
-                await RefreshToken.destroy({where: { token: refresh_token?.token }});
+                if(refresh_token)
+                    await RefreshToken.destroy({where: { token: refresh_token?.token }});
             }
             
             await user_controller.upsert(user);
-            res.status(204).send("Ban status successfully updated.");
+            res.status(200).send("Ban status successfully updated.");
+            return;
         }
         res.status(404).send("An error has occurred. If this error persists, please contact support.");
+        return;
 
     } catch(error) {
         console.log(error);

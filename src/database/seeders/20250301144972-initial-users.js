@@ -11,7 +11,7 @@ module.exports = {
   
   async up (queryInterface, Sequelize) {    
   const [ adminGroup ] = await queryInterface.sequelize.query('SELECT ID from common."Groups" where name = :name', {replacements: { name: 'Administrator'}, type: queryInterface.sequelize.QueryTypes.SELECT})
-
+  const [ memberGroup ] = await queryInterface.sequelize.query('SELECT ID from common."Groups" where name = :name', {replacements: { name: 'Member'}, type: queryInterface.sequelize.QueryTypes.SELECT})
   
   const initial_users = JSON.parse(process.env.INITIAL_USERS);
   console.log(initial_users);
@@ -19,9 +19,20 @@ module.exports = {
     o.id = uuidv4()
     o.createdAt = nowUtc;
     o.updatedAt = nowUtc;
-    o.groupId = adminGroup.id
+
+    // Set Password Hash and Delete Password
     o.password_hash = await argon2.hash(o.password);
     delete o.password;
+
+    // Set group membership and delete group name
+    switch(o.group_name){
+      case "admin":        
+        o.groupId = adminGroup.id;
+        break;
+      default:
+        o.groupId = memberGroup.id;
+    }
+    delete o.group_name;
   }
 
   console.log(initial_users);

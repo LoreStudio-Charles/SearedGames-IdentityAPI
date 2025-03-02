@@ -52,7 +52,6 @@ export default class AuthMiddleware {
                                 }
                             ]
                         });
-                        console.log(current_user?.Group)
                         
                         if(current_user?.Group?.Roles.some(r => r.name.toLowerCase() === role.toLowerCase()))
                         {
