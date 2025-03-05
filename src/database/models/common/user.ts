@@ -11,7 +11,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare iconImageUrl: string;
     declare email: string;
     declare password_hash: string;
-    declare banned: boolean;
+    declare isBanned: boolean;
     declare Group: NonAttribute<Group>;
     declare groupId: NonAttribute<string>;
 }
@@ -49,7 +49,7 @@ User.init(
         type: Sequelize.STRING,
         allowNull: false
     },
-    banned: {
+    isBanned: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false

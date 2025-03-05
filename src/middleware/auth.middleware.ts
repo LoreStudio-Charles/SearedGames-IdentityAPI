@@ -3,6 +3,8 @@ import Role from '@db/models/common/role';
 import User from '@db/models/common/user';
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default class AuthMiddleware {
     verify(req: Request, res: Response, next: NextFunction) {
@@ -52,10 +54,14 @@ export default class AuthMiddleware {
                                 }
                             ]
                         });
+
+                        if(current_user?.isBanned)
+                            return res.status(403).send("Access denied.");
                         
                         if(current_user?.Group?.Roles.some(r => r.name.toLowerCase() === role.toLowerCase()))
                         {
                             req.headers.user = username;
+                            req.headers.user_id = current_user.id;
                             next();
                         } else
                         {

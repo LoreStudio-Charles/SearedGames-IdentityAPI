@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 import AuthRouter from '@routers/common/accounts/auth.routes';
 import GameRouter from '@routers/common/games/game.routes';
 import UserRouter from '@routers/common/accounts/user.routes';
-import GroupRouter from '@routers/common/accounts/group.route';
+import GroupRouter from '@routers/common/accounts/group.routes';
+import SessionRouter from '@routers/common/games/session.routes';
 import Relationships from '@db/relationships';
 import AbilityCost from './types/system/ability.cost';
 import { AbilityResources } from './types/system/ability.resource';
@@ -25,6 +26,7 @@ app.use('/game', GameRouter);
 app.use('/user', UserRouter);
 app.use('/group', GroupRouter);
 app.use('/auth', AuthRouter);
+app.use('/session', SessionRouter);
 
 app.get('/', (req, res) => {
   res.send('Express + TypeScript Server');

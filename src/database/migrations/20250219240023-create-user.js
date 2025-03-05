@@ -23,11 +23,12 @@ module.exports = {
       password_hash: {
         type: Sequelize.STRING
       },
-      banned: {
+      isBanned: {
         type: Sequelize.BOOLEAN
       },
       groupId: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: { model: 'Groups', key: 'id' }
       },
       createdAt: {
         allowNull: false,

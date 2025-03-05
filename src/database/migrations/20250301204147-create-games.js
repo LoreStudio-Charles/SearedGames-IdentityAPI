@@ -22,6 +22,14 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      publisher: {
+          type: Sequelize.STRING,
+          allowNull: false
+      },
+      status: {
+          type: Sequelize.ENUM,
+          values: ['development', 'active', 'maintenance', 'discontinued']
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

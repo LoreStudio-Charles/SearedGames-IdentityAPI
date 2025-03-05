@@ -1,4 +1,6 @@
 import * as argon2 from 'argon2';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import { Request, Response } from'express';
 import jwt, { UserJwtPayload } from 'jsonwebtoken';
@@ -9,6 +11,7 @@ import RefreshToken from '@db/models/common/refresh_tokens';
 const express = require('express');
 const router = express.Router();
 const auth_controller = new AuthController();
+
 
 router.post('/login', async(req: Request, res: Response) => {
     
@@ -47,7 +50,7 @@ router.post('/token', async(req: Request, res: Response) => {
         const token_payload = {
             username: user?.username
         }
-        const access_token = jwt.sign(token_payload, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '120s' }); 
+        const access_token = jwt.sign(token_payload, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: process.env.ACCESS_TOKEN_DURATION }); 
         res.json({
             "status": "Login successful.",
             "access_token": access_token

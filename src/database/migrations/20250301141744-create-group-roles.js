@@ -21,12 +21,14 @@ module.exports = {
       groupId: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: { model: 'Groups', key: 'id' }
       },
       roleId: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: { model: 'Roles', key: 'id' }
       },
       createdAt: {
         allowNull: false,

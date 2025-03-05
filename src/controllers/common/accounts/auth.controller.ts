@@ -2,6 +2,8 @@ import RefreshToken from '@db/models/common/refresh_tokens';
 import User from '@db/models/common/user'
 import * as argon2 from 'argon2';
 import jwt, { UserJwtPayload } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 
@@ -25,11 +27,11 @@ export default class UserController {
                     username: user?.name
                 }
 
-                const access_token = jwt.sign(token_payload, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '720s' }); 
+                const access_token = jwt.sign(token_payload, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: process.env.ACCESS_TOKEN_DURATION }); 
 
                 const refresh_token = (await this.save_refresh_token(
                     user?.id as string, 
-                    jwt.sign(token_payload, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: '120d' })
+                    jwt.sign(token_payload, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: process.env.REFRESH_TOKEN_DURATION })
                 )).token;
 
                 return {

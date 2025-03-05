@@ -1,4 +1,4 @@
-import Game from '@db/models/common/game';
+import Game from '@db/models/games/game';
 
 export default class GameController {
     list() {
