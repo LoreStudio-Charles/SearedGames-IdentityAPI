@@ -56,9 +56,9 @@ router.post('/ban', auth_middleware.verifyRole(GroupRoles.admin), async(req: Req
 
         if(user)
         {
-            user.banned = ban_status;
+            user.isBanned = ban_status;
         
-            console.log(`User: ${user.name} has has banned status set to ${ban_status}`);
+            console.log(`User: ${user.name} has has ban status set to ${ban_status}`);
             if(ban_status)
             {
                 const refresh_token = await RefreshToken.findOne({where: { uid }});
